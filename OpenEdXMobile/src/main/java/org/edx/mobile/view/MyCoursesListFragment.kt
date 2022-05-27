@@ -36,7 +36,6 @@ import org.edx.mobile.module.analytics.Analytics
 import org.edx.mobile.module.analytics.InAppPurchasesAnalytics
 import org.edx.mobile.module.db.DataCallback
 import org.edx.mobile.util.ConfigUtil
-import org.edx.mobile.util.ConfigUtil.Companion.isCourseDiscoveryEnabled
 import org.edx.mobile.util.NetworkUtil
 import org.edx.mobile.util.NonNullObserver
 import org.edx.mobile.util.UiUtils
@@ -334,7 +333,7 @@ class MyCoursesListFragment : OfflineSupportBaseFragment(), RefreshListener {
         }
         addFindCoursesFooter()
         adapter.notifyDataSetChanged()
-        if (adapter.isEmpty && !isCourseDiscoveryEnabled(environment)) {
+        if (adapter.isEmpty && !environment.config.discoveryConfig.isDiscoveryEnabled) {
             errorNotification.showError(
                 R.string.no_courses_to_display,
                 R.drawable.ic_error, 0, null
@@ -427,7 +426,7 @@ class MyCoursesListFragment : OfflineSupportBaseFragment(), RefreshListener {
         if (binding.myCourseList.footerViewsCount > 0) {
             return
         }
-        if (isCourseDiscoveryEnabled(environment)) {
+        if (environment.config.discoveryConfig.isDiscoveryEnabled) {
             // Add 'Find a Course' list item as a footer.
             val footer: PanelFindCourseBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(activity),
